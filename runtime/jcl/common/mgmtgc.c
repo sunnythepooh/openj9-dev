@@ -43,6 +43,14 @@ static UDATA getIndexFromCollectorID(J9JavaLangManagementData *mgmt, UDATA id);
 static jlong getCollectorField(JNIEnv *env, jint id, GarbageCollectorField field);
 
 jlong JNICALL
+Java_openj9_internal_management_GCInfoBaseImpl_getFullGCCountImpl(JNIEnv *env, jobject beanInstance) {
+	J9JavaVM *javaVM = ((J9VMThread *) env)->javaVM;
+	J9JavaLangManagementData *mgmt = javaVM->managementData;
+	J9GarbageCollectorData *gc = &mgmt->garbageCollectors[getIndexFromCollectorID(mgmt, (UDATA) 0)];
+	return gc->lastGcInfo.index;
+}
+
+jlong JNICALL
 Java_com_ibm_java_lang_management_internal_GarbageCollectorMXBeanImpl_getCollectionCountImpl(JNIEnv *env, jobject beanInstance, jint id)
 {
 	return getCollectorField(env, id, FIELD_COLLECTION_COUNT);

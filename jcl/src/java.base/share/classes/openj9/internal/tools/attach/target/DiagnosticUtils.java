@@ -27,12 +27,14 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 import com.ibm.oti.vm.VM;
 
 import openj9.internal.management.ClassLoaderInfoBaseImpl;
+import openj9.internal.management.GCInfoBaseImpl;
 import openj9.management.internal.IDCacheInitializer;
 import openj9.management.internal.InvalidDumpOptionExceptionBase;
 import openj9.management.internal.LockInfoBase;
@@ -368,7 +370,8 @@ public class DiagnosticUtils {
 		IPC.logMessage("jstat command : ", diagnosticCommand); //$NON-NLS-1$
 		StringWriter buffer = new StringWriter(100);
 		PrintWriter bufferPrinter = new PrintWriter(buffer);
-		bufferPrinter.println("Dummy GC stat"); //$NON-NLS-1$
+		bufferPrinter.println("FGC"); //$NON-NLS-1$
+		bufferPrinter.printf("%5d%n", Long.valueOf(GCInfoBaseImpl.getFullGCCountImpl()));
 		bufferPrinter.flush();
 		return DiagnosticProperties.makeStringResult(buffer.toString());
 	}

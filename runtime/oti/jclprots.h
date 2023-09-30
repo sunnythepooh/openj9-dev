@@ -356,6 +356,8 @@ extern J9_CFUNC jboolean JNICALL
 Java_com_ibm_java_lang_management_internal_ClassLoadingMXBeanImpl_isVerboseImpl (JNIEnv *env, jobject beanInstance);
 extern J9_CFUNC jlong JNICALL
 Java_openj9_internal_management_ClassLoaderInfoBaseImpl_getLoadedClassCountImpl (JNIEnv *env, jobject beanInstance);
+extern J9_CFUNC jlong JNICALL
+Java_openj9_internal_management_GCInfoBaseImpl_getFullGCCountImpl(JNIEnv *env, jobject beanInstance);
 
 /* J9SourceManagementGarbageCollector*/
 extern J9_CFUNC jlong JNICALL
