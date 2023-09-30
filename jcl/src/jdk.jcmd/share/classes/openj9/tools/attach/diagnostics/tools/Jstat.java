@@ -41,7 +41,8 @@ public class Jstat {
 	private static String statOption;
 
 	private static final String OPTION_CLASS = "-class";
-	private static final String[] OPTIONS = { OPTION_CLASS };
+	private static final String OPTION_GC = "-gc";
+	private static final String[] OPTIONS = { OPTION_CLASS, OPTION_GC };
 
 	private static final String ERROR_AN_ARG_REQUIRED = "An argument is required";
 	private static final String ERROR_INVALID_ARG = "An invalid argument";
@@ -149,6 +150,9 @@ public class Jstat {
 						switch (arg) {
 						case OPTION_CLASS:
 							statOption = "jstat.class";
+							break;
+						case OPTION_GC:
+							statOption = "jstat.gc";
 							break;
 						default:
 							// invalid option was specified, print error message and help text, and exit

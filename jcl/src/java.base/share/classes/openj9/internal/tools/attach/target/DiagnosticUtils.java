@@ -102,6 +102,11 @@ public class DiagnosticUtils {
 	 */
 	private static final String DIAGNOSTICS_STAT_CLASS = "jstat.class"; //$NON-NLS-1$
 
+	/**
+	 * Get GC statistics
+	 */
+	private static final String DIAGNOSTICS_STAT_GC = "jstat.gc"; //$NON-NLS-1$
+
 	// load JVMTI agent
 	private static final String DIAGNOSTICS_LOAD_JVMTI_AGENT = "JVMTI.agent_load"; //$NON-NLS-1$
 
@@ -177,7 +182,7 @@ public class DiagnosticUtils {
 		IPC.logMessage("executeDiagnosticCommand: ", diagnosticCommand); //$NON-NLS-1$
 
 		DiagnosticProperties result;
-		String[] commandRoot = diagnosticCommand.split(DiagnosticUtils.DIAGNOSTICS_OPTION_SEPARATOR);
+		String[] commandRoot = diagnosticCommand.split(DiagnosticUtils.DIAGNOSTICS_OPTION_SEPARATOR);		
 		Function<String, DiagnosticProperties> cmd = commandTable.get(commandRoot[0]);
 		if (null == cmd) {
 			result = DiagnosticProperties.makeStatusProperties(true,
@@ -359,6 +364,15 @@ public class DiagnosticUtils {
 		return DiagnosticProperties.makeStringResult(buffer.toString());
 	}
 
+	private static DiagnosticProperties getJstatGC(String diagnosticCommand) {
+		IPC.logMessage("jstat command : ", diagnosticCommand); //$NON-NLS-1$
+		StringWriter buffer = new StringWriter(100);
+		PrintWriter bufferPrinter = new PrintWriter(buffer);
+		bufferPrinter.println("Dummy GC stat"); //$NON-NLS-1$
+		bufferPrinter.flush();
+		return DiagnosticProperties.makeStringResult(buffer.toString());
+	}
+
 	@SuppressWarnings("nls")
 	private static DiagnosticProperties loadJVMTIAgent(String diagnosticCommand) {
 		DiagnosticProperties result;
@@ -440,6 +454,10 @@ public class DiagnosticUtils {
 	private static final String DIAGNOSTICS_JSTAT_CLASS_HELP = "Show JVM classloader statistics.%n" //$NON-NLS-1$
 			+ FORMAT_PREFIX + DIAGNOSTICS_STAT_CLASS + "%n" //$NON-NLS-1$
 			+ "NOTE: this utility might significantly affect the performance of the target VM.%n"; //$NON-NLS-1$
+	
+	private static final String DIAGNOSTICS_JSTAT_GC_HELP = "Show JVM GC statistics.%n" //$NON-NLS-1$
+			+ FORMAT_PREFIX + DIAGNOSTICS_STAT_GC + "%n" //$NON-NLS-1$
+			+ "NOTE: this utility might significantly affect the performance of the target VM.%n"; //$NON-NLS-1$
 
 	@SuppressWarnings("nls")
 	private static final String DIAGNOSTICS_LOAD_JVMTI_AGENT_HELP = "Load JVMTI agent.%n"
@@ -482,6 +500,9 @@ public class DiagnosticUtils {
 		
 		commandTable.put(DIAGNOSTICS_STAT_CLASS, DiagnosticUtils::getJstatClass);
 		helpTable.put(DIAGNOSTICS_STAT_CLASS, DIAGNOSTICS_JSTAT_CLASS_HELP);
+
+		commandTable.put(DIAGNOSTICS_STAT_GC, DiagnosticUtils::getJstatGC);
+		helpTable.put(DIAGNOSTICS_STAT_GC, DIAGNOSTICS_JSTAT_GC_HELP);
 
 		commandTable.put(DIAGNOSTICS_LOAD_JVMTI_AGENT, DiagnosticUtils::loadJVMTIAgent);
 		helpTable.put(DIAGNOSTICS_LOAD_JVMTI_AGENT, DIAGNOSTICS_LOAD_JVMTI_AGENT_HELP);
